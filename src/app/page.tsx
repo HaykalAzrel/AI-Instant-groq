@@ -35,6 +35,7 @@ export default function Home() {
     } else {
       const data = await res.json();
       aiResponse = data.response;
+      setMessages((p) => [...p, { sender: "AI", text: aiResponse }]);
     }
     setLoading(false);
   };
@@ -54,7 +55,7 @@ export default function Home() {
           {loading && <p className="text-gray-500 italic">Thinking...</p>}
         </div>
 
-        <FileUpload onFileSelect={(f: File) => setFile(f)} />
+        <FileUpload onSelect={setFile} />
         {file && <p className="text-sm text-gray-500 dark:text-gray-300">📄 {file.name}</p>}
 
         <div className="flex gap-2">
@@ -62,14 +63,14 @@ export default function Home() {
             className="flex-grow border dark:border-gray-700 rounded-lg p-2 bg-white dark:bg-gray-800"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message..."
+            placeholder="Type your message in English or Indonesian..."
           />
           <button
             onClick={sendMessage}
             disabled={loading}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
-            Send
+            {loading ? "Sending..." : "Send"}
           </button>
         </div>
       </div>
